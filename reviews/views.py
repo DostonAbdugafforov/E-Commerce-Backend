@@ -7,7 +7,7 @@ from rest_framework.generics import (
     DestroyAPIView,
 )
 from .models import Review
-from common.permissions import IsOwnerOrAdminOrReadOnly
+from .permissions import IsOwnerOrAdminOrReadOnly
 from .serializers import (
     ReviewSerializer,
     ReviewCreateSerializer,

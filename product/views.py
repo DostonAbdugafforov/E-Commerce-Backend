@@ -7,7 +7,7 @@ from rest_framework.generics import (
     DestroyAPIView,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
-from common.permissions import IsAdminOrSellerOrReadOnly, IsOwnerOrAdminOrReadOnly
+from .permissions import IsAdminOrSellerOrReadOnly, IsOwnerOrAdminOrReadOnly
 
 from .models import Product
 from .serializers import (

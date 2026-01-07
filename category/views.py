@@ -1,5 +1,4 @@
-from rest_framework.permissions import AllowAny
-from common.permissions import IsAdminOrReadOnly
+from .permissions import IsAdminOrReadOnly
 
 from .models import Category
 from rest_framework.generics import (
