@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'common',
     'reviews',
     'sales',
-    'analytics',
+    'cart',
+    'order',
 
     #Global
     'rest_framework',
