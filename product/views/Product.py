@@ -6,11 +6,10 @@ from rest_framework.generics import (
     UpdateAPIView,
     DestroyAPIView,
 )
-from rest_framework.parsers import MultiPartParser, FormParser
-from .permissions import IsAdminOrSellerOrReadOnly, IsOwnerOrAdminOrReadOnly
+from product.permissions import IsAdminOrSellerOrReadOnly, IsOwnerOrAdminOrReadOnly
 
-from .models import Product
-from .serializers import (
+from product.models import Product
+from product.serializers.Product import (
     ProductSerializer,
     ProductCreateSerializer,
     ProductUpdateSerializer,
@@ -22,12 +21,12 @@ from .serializers import (
 class ProductListAPIView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ProductCreateAPIView(CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductCreateSerializer
-    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [IsAdminOrSellerOrReadOnly]
 
     def perform_create(self, serializer):
@@ -37,12 +36,12 @@ class ProductCreateAPIView(CreateAPIView):
 class ProductDetailAPIView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ProductUpdateAPIView(UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductUpdateSerializer
-    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [IsAuthenticated, IsOwnerOrAdminOrReadOnly]
 
 
@@ -50,6 +49,9 @@ class ProductDestroyAPIView(DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductDeleteSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrAdminOrReadOnly]
+
+
+
 
 
 

@@ -20,6 +20,7 @@ from .serializers import (
 class ReviewListAPIView(ListAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ReviewCreateAPIView(CreateAPIView):
@@ -34,6 +35,7 @@ class ReviewCreateAPIView(CreateAPIView):
 class ReviewDetailAPIView(RetrieveAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewDetailSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ReviewUpdateAPIView(UpdateAPIView):

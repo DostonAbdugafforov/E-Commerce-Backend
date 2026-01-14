@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'sales',
     'cart',
     'order',
+    'analytics',
 
     #Global
     'rest_framework',

@@ -1,10 +1,17 @@
 from django.urls import path
-from .views import (
+from product.views.Product import (
     ProductListAPIView,
     ProductCreateAPIView,
     ProductDetailAPIView,
     ProductUpdateAPIView,
     ProductDestroyAPIView,
+)
+from product.views.ProductImage import (
+    ProductImageListAPIView,
+    ProductImageDetailAPIView,
+    ProductImageCreateAPIView,
+    ProductImageUpdateAPIView,
+    ProductImageDeleteAPIView,
 )
 
 urlpatterns = [
@@ -13,5 +20,11 @@ urlpatterns = [
     path('product/create', ProductCreateAPIView.as_view()),
     path('product/<int:pk>/update', ProductUpdateAPIView.as_view()),
     path('product/<int:pk>/destroy', ProductDestroyAPIView.as_view()),
+
+    path('product/image', ProductImageListAPIView.as_view()),
+    path('product/image/<int:pk>/detail', ProductImageDetailAPIView.as_view()),
+    path('product/image/create', ProductImageCreateAPIView.as_view()),
+    path('product/image/<int:pk>/update', ProductImageUpdateAPIView.as_view()),
+    path('product/image/<int:pk>/delete', ProductImageDeleteAPIView.as_view()),
 ]
 

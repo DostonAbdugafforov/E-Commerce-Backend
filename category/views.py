@@ -1,3 +1,5 @@
+from rest_framework.permissions import IsAuthenticated
+
 from .permissions import IsAdminOrReadOnly
 
 from .models import Category
@@ -20,6 +22,8 @@ from .serializers import (
 class CategoryListAPIView(ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+
 
 class CategoryCreateAPIView(CreateAPIView):
     queryset = Category.objects.all()
@@ -36,6 +40,8 @@ class CategoryUpdateAPIView(UpdateAPIView):
 class CategoryDetailAPIView(RetrieveAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryDetailSerializer
+    permission_classes = [IsAuthenticated]
+
 
 class CategoryDeleteAPIView(DestroyAPIView):
     queryset = Category.objects.all()
