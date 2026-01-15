@@ -98,6 +98,19 @@ class FlashSale(BaseModel):
         self.full_clean()
         super().save(*args, **kwargs)
 
+    def remaining_quantity(self):
+        """Qolgan mahsulotlar soni"""
+        return max(0, self.quantity - self.sold_quantity)
+
+    def is_currently_active(self):
+        """Flash sale hozir faol yoki yo'qligini tekshirish"""
+        self.update_status()
+        return self.status == 'active' and self.is_active
+
+    def is_sold_out(self):
+        """Mahsulotlar tugaganligini tekshirish"""
+        return self.sold_quantity >= self.quantity
+
     def __str__(self):
         return f"{self.product.name} - {self.discount_percentage}% off"
 

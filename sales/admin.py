@@ -2,7 +2,6 @@ from django.contrib import admin
 from sales.models.FlashSale import FlashSale
 from sales.models.FlashSaleNotification import FlashSaleNotification
 
-
 @admin.register(FlashSale)
 class FlashSaleAdmin(admin.ModelAdmin):
     list_display = [
@@ -23,9 +22,9 @@ class FlashSaleAdmin(admin.ModelAdmin):
     date_hierarchy = 'start_time'
 
     def remaining_stock(self, obj):
-        return obj.quantity - obj.sold_quantity
+        return f"{obj.remaining_quantity()} / {obj.quantity}"
 
-    remaining_stock.short_description = "Qolgan / Jami"
+    remaining_stock.short_description = 'Qolgan / Jami'
 
 
 @admin.register(FlashSaleNotification)
