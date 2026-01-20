@@ -11,7 +11,7 @@ class Product(BaseModel):
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField(default=0)
+    stock = models.PositiveIntegerField(default=1)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                               related_name='products', null=True, blank=True)
 

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
@@ -45,6 +46,8 @@ class FlashSale(BaseModel):
         choices=STATUS_CHOICES,
         default='scheduled'
     )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                              related_name='flash_sales', null=True, blank=True)
 
     def clean(self):
         if self.start_time and self.end_time:

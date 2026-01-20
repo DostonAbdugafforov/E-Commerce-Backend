@@ -42,9 +42,6 @@ class FlashSaleUpdateSerializer(serializers.ModelSerializer):
         if quantity < 1:
             raise serializers.ValidationError("Flash sale uchun minimal quantity 1 bo'lishi kerak")
 
-        if not product.is_active:
-            raise serializers.ValidationError("Faol bo‘lmagan mahsulot uchun flash sale yaratib bo‘lmaydi")
-
         if product.stock < quantity:
             raise serializers.ValidationError("Mahsulot stocki yetarli emas")
 

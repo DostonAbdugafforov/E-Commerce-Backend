@@ -4,13 +4,6 @@ from sales.models.FlashSale import FlashSale
 
 class FlashSaleSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField(source='product.id', read_only=True)
-    product_name = serializers.CharField(source='product.name', read_only=True)
-    product_price = serializers.DecimalField(
-        source='product.price',
-        decimal_places=2,
-        max_digits=10,
-        read_only=True
-    )
     is_currently_active = serializers.SerializerMethodField()
 
     class Meta:
@@ -18,8 +11,6 @@ class FlashSaleSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'product_id',
-            'product_name',
-            'product_price',
             'discount_percentage',
             'sale_price',
             'quantity',
@@ -36,6 +27,6 @@ class FlashSaleSerializer(serializers.ModelSerializer):
             'status',
         ]
 
-        def get_is_currently_active(self, obj):
-            return obj.is_currently_active()
+    def get_is_currently_active(self, obj):
+        return obj.is_currently_active()
 

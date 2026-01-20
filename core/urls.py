@@ -40,6 +40,7 @@ urlpatterns = [
         path("category/", include("category.urls")),
         path("products/", include("product.urls")),
         path("reviews/", include("reviews.urls")),
+        path("sales/", include("sales.urls")),
     ]))
 ]
 
