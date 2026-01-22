@@ -1,5 +1,10 @@
+from datetime import timedelta
+
+from django.utils import timezone
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from sales.models.FlashSale import FlashSale
 from sales.serializers.FlashSale.list import FlashSaleSerializer
@@ -11,35 +16,44 @@ class FlashSaleListAPIView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def active_flash_sales(request):
+    """Hozir faol bo'lgan barcha flash sale'lar"""
+    flash_sales = [fs for fs in FlashSale.objects.filter(is_active=True) if fs.is_currently_active()]
+    serializer = FlashSaleSerializer(flash_sales, many=True)
+    return Response({
+        'count': len(flash_sales),
+        'results': serializer.data
+    })
 
 
-# # ==================== Special Flash Sale Views ====================
-#
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def active_flash_sales(request):
-#     """Hozir faol bo'lgan barcha flash sale'lar"""
-#     flash_sales = FlashSaleService.get_active_flash_sales()
-#     serializer = FlashSaleListSerializer(flash_sales, many=True)
-#     return Response({
-#         'count': len(flash_sales),
-#         'results': serializer.data
-#     })
-#
-#
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def upcoming_flash_sales(request):
-#     """Yaqin vaqtda boshlanadigan flash sale'lar"""
-#     hours = int(request.query_params.get('hours', 24))
-#     flash_sales = FlashSaleService.get_upcoming_flash_sales(hours=hours)
-#     serializer = FlashSaleListSerializer(flash_sales, many=True)
-#     return Response({
-#         'count': len(flash_sales),
-#         'results': serializer.data
-#     })
-#
-#
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def upcoming_flash_sales(request):
+    """Boshkanishiga 24 soat qolgan mahsulotlarga qo'yilgan flash sale'lar"""
+    hours = int(request.query_params.get('hours', 24))
+    now = timezone.now()
+
+    flash_sales = FlashSale.objects.filter(
+        is_active=True,
+        status='scheduled',
+        start_time__gt=now,
+        start_time__lte=now + timedelta(hours=hours)
+    )
+
+    serializer = FlashSaleSerializer(
+        flash_sales,
+        many=True,
+        context={'request': request}
+    )
+
+    return Response({
+        'count': flash_sales.count(),
+        'results': serializer.data
+    })
+
+
 # @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
 # def my_interested_flash_sales(request):
@@ -54,8 +68,8 @@ class FlashSaleListAPIView(ListAPIView):
 #         'count': len(flash_sales),
 #         'results': serializer.data
 #     })
-#
-#
+
+
 # @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
 # def check_product_flash_sale(request, product_id):
