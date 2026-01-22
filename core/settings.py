@@ -40,15 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #Local
-    'account',
-    'product',
-    'category',
-    'common',
-    'reviews',
-    'sales',
-    'cart',
-    'order',
-    'analytics',
+    'apps.account',
+    'apps.product',
+    'apps.category',
+    'apps.common',
+    'apps.reviews',
+    'apps.sales',
+    'apps.cart',
+    'apps.order',
+    'apps.analytics',
 
     #Global
     'rest_framework',

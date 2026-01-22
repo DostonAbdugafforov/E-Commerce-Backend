@@ -36,11 +36,11 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('api/v1/', include([
-        path('accounts/', include('account.urls')),
-        path("category/", include("category.urls")),
-        path("products/", include("product.urls")),
-        path("reviews/", include("reviews.urls")),
-        path("sales/", include("sales.urls")),
+        path('accounts/', include('apps.account.urls')),
+        path("category/", include("apps.category.urls")),
+        path("products/", include("apps.product.urls")),
+        path("reviews/", include("apps.reviews.urls")),
+        path("sales/", include("apps.sales.urls")),
     ]))
 ]
 
