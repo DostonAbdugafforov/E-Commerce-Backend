@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import (
     ListAPIView,
@@ -6,6 +7,9 @@ from rest_framework.generics import (
     UpdateAPIView,
     DestroyAPIView,
 )
+from rest_framework.response import Response
+
+from apps.analytics.service.ProductViewHistory import track_product_view
 from apps.product.permissions import IsAdminOrSellerOrReadOnly, IsOwnerOrAdminOrReadOnly
 
 from apps.product.models import Product
@@ -37,6 +41,12 @@ class ProductDetailAPIView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer
     permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        track_product_view(request.user, product)
+        serializer = self.get_serializer(product)
+        return Response(serializer.data)
 
 
 class ProductUpdateAPIView(UpdateAPIView):

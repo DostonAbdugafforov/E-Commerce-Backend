@@ -11,7 +11,7 @@ def track_product_view(user, product):
         product=product
     )
     if not created:
-        obj.save(update_fields=['created_at'])
+        obj.save()
 
 
 def cleanup_old_views(days=30):

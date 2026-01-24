@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.analytics.models.ProductViewHistory import ProductViewHistory
+from apps.product.models import Product
 
 
 class ProductViewHistorySerializer(serializers.ModelSerializer):
@@ -22,11 +23,12 @@ class ProductViewHistorySerializer(serializers.ModelSerializer):
         )
 
 
-class MostViewedProductsSerializer(ProductViewHistorySerializer):
+class MostViewedProductsSerializer(serializers.ModelSerializer):
     views_count = serializers.IntegerField(read_only=True)
 
-    class Meta(ProductViewHistorySerializer.Meta):
-        fields = ProductViewHistorySerializer.Meta.fields + ('views_count',)
+    class Meta:
+        model = Product
+        fields = ('id', 'name', 'price', 'views_count')
 
 
 class ProductViewsCountSerializer(serializers.Serializer):
