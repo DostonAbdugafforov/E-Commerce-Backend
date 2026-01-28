@@ -42,6 +42,7 @@ urlpatterns = [
         path("reviews/", include("apps.reviews.urls")),
         path("sales/", include("apps.sales.urls")),
         path("analytics/", include("apps.analytics.urls.ProductViewHistory")),
+        path("cart/", include("apps.cart.urls")),
     ]))
 ]
 
