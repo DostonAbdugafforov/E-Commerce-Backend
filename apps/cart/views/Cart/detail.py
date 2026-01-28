@@ -1,3 +1,4 @@
+from rest_framework.exceptions import NotFound
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
@@ -11,5 +12,8 @@ class ActiveCartDetailAPIView(RetrieveAPIView):
 
     def get_object(self):
         """Foydalanuvchi active cartini olish"""
-        return Cart.objects.get(user=self.request.user, status=Cart.Status.ACTIVE)
+        try:
+            return Cart.objects.get(user=self.request.user, status=Cart.Status.ACTIVE)
+        except Cart.DoesNotExist:
+            raise NotFound("Foydalanuvchida active cart mavjud emas")
 

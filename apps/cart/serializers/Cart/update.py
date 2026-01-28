@@ -2,7 +2,12 @@ from rest_framework import serializers
 from apps.cart.models.Cart import Cart
 
 class ActiveCartUpdateSerializer(serializers.ModelSerializer):
-    status = serializers.ChoiceField(choices=[Cart.Status.ORDERED, Cart.Status.ABANDONED])
+    status = serializers.ChoiceField(
+        choices=[
+            (Cart.Status.ORDERED, "Ordered"),
+            (Cart.Status.ABANDONED, "Abandoned")
+        ]
+    )
 
     class Meta:
         model = Cart
@@ -12,3 +17,4 @@ class ActiveCartUpdateSerializer(serializers.ModelSerializer):
         if value not in [Cart.Status.ORDERED, Cart.Status.ABANDONED]:
             raise serializers.ValidationError("Status faqat 'ordered' yoki 'abandoned' bo'lishi mumkin")
         return value
+
