@@ -13,8 +13,21 @@ class ActiveCartUpdateSerializer(serializers.ModelSerializer):
         model = Cart
         fields = ['status']
 
-    def validate_status(self, value):
-        if value not in [Cart.Status.ORDERED, Cart.Status.ABANDONED]:
-            raise serializers.ValidationError("Status faqat 'ordered' yoki 'abandoned' bo'lishi mumkin")
-        return value
+    def update(self, instance, validated_data):
+        new_status = validated_data['status']
 
+        if instance.status == Cart.Status.ACTIVE and new_status == Cart.Status.ORDERED:
+            for item in instance.items.select_related('product'):
+                product = item.product
+
+                if item.quantity > product.stock:
+                    raise serializers.ValidationError(
+                        f"'{product.name}' mahsulot stokda yetarli emas"
+                    )
+
+                product.stock -= item.quantity
+                product.save()
+
+        instance.status = new_status
+        instance.save()
+        return instance
