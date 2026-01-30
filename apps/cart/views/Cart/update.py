@@ -23,10 +23,6 @@ class ActiveCartUpdateAPIView(UpdateAPIView):
         cart = self.get_object()
         serializer = self.get_serializer(cart, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        updated_cart = serializer.save()
+        serializer.save()
 
-        """Cart status ordered bolganda order yaratish"""
-        if updated_cart.status == Cart.Status.ORDERED:
-            create_order_from_cart(updated_cart)
-
-        return Response(self.get_serializer(updated_cart).data)
+        return Response(serializer.data)
