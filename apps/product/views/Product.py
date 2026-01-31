@@ -1,5 +1,6 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from django.shortcuts import get_object_or_404
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import (
     ListAPIView,
@@ -21,14 +22,18 @@ from apps.product.serializers.Product import (
     ProductDetailSerializer,
     ProductDeleteSerializer,
 )
-from apps.common.pagination import ProductPagination
+from apps.common.pagination import CustomPagination
+from apps.product.filters import ProductFilter
 
 
 class ProductListAPIView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = ProductPagination
+    pagination_class = CustomPagination
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    filterset_class = ProductFilter
+    search_fields = ['name', 'description']
 
 
 class ProductCreateAPIView(CreateAPIView):

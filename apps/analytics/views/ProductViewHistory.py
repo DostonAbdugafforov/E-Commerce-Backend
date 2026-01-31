@@ -15,13 +15,13 @@ from apps.analytics.serializers.ProductViewHistory import (
     MostViewedProductsSerializer,
     ProductViewsCountSerializer,
 )
-from apps.common.pagination import ProductPagination
+from apps.common.pagination import CustomPagination
 
 
 class MostViewedProductsAPIView(ListAPIView):
     serializer_class = MostViewedProductsSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = ProductPagination
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         return Product.objects.annotate(
@@ -32,8 +32,7 @@ class MostViewedProductsAPIView(ListAPIView):
 class MyViewedProductsAPIView(ListAPIView):
     serializer_class = ProductViewHistorySerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = ProductPagination
-
+    pagination_class = CustomPagination
     def get_queryset(self):
         return ProductViewHistory.objects.filter(
             user=self.request.user
