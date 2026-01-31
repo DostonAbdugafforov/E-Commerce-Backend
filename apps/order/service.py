@@ -18,7 +18,7 @@ def create_order_from_cart(cart: Cart):
             OrderItem(
                 order=order,
                 product=item.product,
-                price=item.product.price,
+                price=item.price,
                 quantity=item.quantity
             )
         )

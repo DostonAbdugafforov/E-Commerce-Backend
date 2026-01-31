@@ -1,5 +1,7 @@
+from django.utils import timezone
 from rest_framework import serializers
 from apps.cart.models.CartItem import CartItem
+from apps.cart.models.Cart import Cart
 
 class CartItemCreateSerializer(serializers.ModelSerializer):
 
@@ -21,12 +23,23 @@ class CartItemCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        from apps.cart.models.Cart import Cart
 
         cart, _ = Cart.objects.get_or_create(user=user, status=Cart.Status.ACTIVE)
         product = validated_data['product']
         quantity = validated_data.get('quantity', 1)
-        price = product.price
+
+        """Mahsulot active flash_sale da bo'lsa chegirmadagi narxni aks holda product.price ni oladi"""
+        now = timezone.now()
+        flashsale = product.flash_sales.filter(
+            is_active=True,
+            start_time__lte=now,
+            end_time__gte=now
+        ).first()
+
+        if flashsale:
+            price = int(product.price * (100 - flashsale.discount_percentage) / 100)
+        else:
+            price = product.price
 
         """Savatda mahsulot allaqachon bor bo'lsa update qiladi"""
         item, created = CartItem.objects.get_or_create(
