@@ -15,12 +15,14 @@ from .serializers import (
     ReviewUpdateSerializer,
     ReviewDeleteSerializer,
 )
+from apps.common.pagination import ReviewPagination
 
 
 class ReviewListAPIView(ListAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = ReviewPagination
 
 
 class ReviewCreateAPIView(CreateAPIView):

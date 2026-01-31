@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import (
     ListAPIView,
@@ -20,12 +21,14 @@ from apps.product.serializers.Product import (
     ProductDetailSerializer,
     ProductDeleteSerializer,
 )
+from apps.common.pagination import ProductPagination
 
 
 class ProductListAPIView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = ProductPagination
 
 
 class ProductCreateAPIView(CreateAPIView):

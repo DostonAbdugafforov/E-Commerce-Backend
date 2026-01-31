@@ -17,12 +17,14 @@ from .serializers import (
     CategoryDetailSerializer,
     CategoryDeleteSerializer,
 )
+from apps.common.pagination import CategoryPagination
 
 
 class CategoryListAPIView(ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CategoryPagination
 
 
 class CategoryCreateAPIView(CreateAPIView):

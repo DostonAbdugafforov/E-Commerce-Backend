@@ -17,12 +17,14 @@ from apps.product.serializers.ProductImage import (
     ProductImageUpdateSerializer,
     ProductImageDeleteSerializer,
 )
+from apps.common.pagination import ProductImagePagination
 
 
 class ProductImageListAPIView(ListAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = ProductImagePagination
 
 
 class ProductImageDetailAPIView(RetrieveAPIView):

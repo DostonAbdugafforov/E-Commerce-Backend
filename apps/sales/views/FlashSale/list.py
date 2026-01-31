@@ -12,12 +12,14 @@ from apps.product.models import Product
 from apps.sales.models.FlashSale import FlashSale
 from apps.sales.serializers.FlashSale.detail import FlashSaleDetailSerializer
 from apps.sales.serializers.FlashSale.list import FlashSaleSerializer
+from apps.common.pagination import SalesPagination
 
 
 class FlashSaleListAPIView(ListAPIView):
     queryset = FlashSale.objects.select_related('product').all()
     serializer_class = FlashSaleSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = SalesPagination
 
 
 @api_view(['GET'])
